@@ -7,11 +7,11 @@ import com.theokanning.openai.service.OpenAiService;
 
 import java.util.Arrays;
 
-public class TestaIntegracao {
+public class CategorizadorDeProdutos {
 
     public static void main(String[] args) {
-        var user = "Gere 5 produtos";
-        var system = "Você é um gerador de produtos ficticios para um ecommerce e deve gerar apenas o nome dos produtos solicitados pelo usuário";
+        var user = "Escova de dentes";
+        var system = "Você é um categorizador de produtos";
 
         var chave = System.getenv("OPENAI_API_KEY");
         var service = new OpenAiService(chave);
@@ -23,12 +23,16 @@ public class TestaIntegracao {
                         new ChatMessage(ChatMessageRole.USER.value(), user),
                         new ChatMessage(ChatMessageRole.SYSTEM.value(), system)
                 ))
+                .n(5)
                 .build();
 
         service
                 .createChatCompletion(completionRequest)
                 .getChoices()
-                .forEach(c -> System.out.print(c.getMessage().getContent()));
+                .forEach(c -> {
+                    System.out.print(c.getMessage().getContent());
+                    System.out.println("------------------------");
+                });
     }
 
 }
