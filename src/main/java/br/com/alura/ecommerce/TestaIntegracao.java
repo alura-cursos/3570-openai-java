@@ -14,7 +14,8 @@ public class TestaIntegracao {
         var user = "Gere 5 produtos";
         var system = "Você é um gerador de produtos ficticios para um ecommerce e deve gerar apenas o nome dos produtos solicitados pelo usuário";
 
-        var service = new OpenAiService("your_token");
+        var chave = System.getenv("OPENAI_API_KEY");
+        var service = new OpenAiService(chave);
 
         var completionRequest = ChatCompletionRequest
                 .builder()
@@ -28,7 +29,7 @@ public class TestaIntegracao {
         service
                 .createChatCompletion(completionRequest)
                 .getChoices()
-                .forEach(System.out::println);
+                .forEach(c -> System.out.print(c.getMessage().getContent()));
     }
 
 }
