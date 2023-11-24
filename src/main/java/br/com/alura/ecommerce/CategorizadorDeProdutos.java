@@ -5,16 +5,32 @@ import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 
+import java.time.Duration;
 import java.util.Arrays;
 
 public class CategorizadorDeProdutos {
 
     public static void main(String[] args) {
-        var user = "Escova de dentes";
-        var system = "Você é um categorizador de produtos";
+        var user = "Celular";
+        var system = """
+        Você é um categorizador de produtos e deve responder apenas o nome da categoria do produto informado
+        
+        Escolha uma categoria dentra a lista abaixo:
+        
+        1. Higiene pessoal
+        2. Eletronicos
+        3. Esportes
+        4. Outros
+        
+        ###### exemplo de uso:
+        
+        Pergunta: Bola de futebol
+        Resposta: Esportes
+        """;
+
 
         var chave = System.getenv("OPENAI_API_KEY");
-        var service = new OpenAiService(chave);
+        var service = new OpenAiService(chave, Duration.ofSeconds(30));
 
         var completionRequest = ChatCompletionRequest
                 .builder()
@@ -31,7 +47,7 @@ public class CategorizadorDeProdutos {
                 .getChoices()
                 .forEach(c -> {
                     System.out.print(c.getMessage().getContent());
-                    System.out.println("------------------------");
+                    System.out.println("\n------------------------\n");
                 });
     }
 
