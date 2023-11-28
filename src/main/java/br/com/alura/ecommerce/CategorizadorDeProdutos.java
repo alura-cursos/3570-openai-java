@@ -57,7 +57,7 @@ public class CategorizadorDeProdutos {
         service
                 .createChatCompletion(completionRequest)
                 .getChoices()
-                .forEach(c -> System.out.print(c.getMessage().getContent()));
+                .forEach(c -> System.out.println(c.getMessage().getContent()));
     }
 
 }

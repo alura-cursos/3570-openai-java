@@ -28,7 +28,7 @@ public class TestaIntegracao {
         service
                 .createChatCompletion(completionRequest)
                 .getChoices()
-                .forEach(c -> System.out.print(c.getMessage().getContent()));
+                .forEach(c -> System.out.println(c.getMessage().getContent()));
     }
 
 }
