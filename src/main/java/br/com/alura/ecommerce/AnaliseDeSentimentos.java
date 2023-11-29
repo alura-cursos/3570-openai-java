@@ -59,6 +59,7 @@ public class AnaliseDeSentimentos {
                                 promptUsuario)))
                 .build();
 
+        var segundoParaProximaTentiva = 5;
         var tentativas = 0;
         while (tentativas++ != 5) {
             try {
@@ -69,9 +70,15 @@ public class AnaliseDeSentimentos {
                 var errorCode = ex.statusCode;
                 switch (errorCode) {
                     case 401 -> throw new RuntimeException("Erro com a chave da API!", ex);
+                    case 429 -> {
+                        System.out.println("Rate Limit atingido! Nova tentativa em instantes");
+                        Thread.sleep(1000 * segundoParaProximaTentiva);
+                        segundoParaProximaTentiva *= 2;
+                    }
                     case 500, 503 -> {
                         System.out.println("API fora do ar! Nova tentativa em instantes");
-                        Thread.sleep(1000 * 5);
+                        Thread.sleep(1000 * segundoParaProximaTentiva);
+                        segundoParaProximaTentiva *= 2;
                     }
                 }
             }
